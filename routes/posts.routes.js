@@ -3,8 +3,6 @@ const express = require('express');
 //Middlewares
 const {  postExists } = require('../middlewares/posts.middlewares');
 
-const router = express.Router();
-
 //Controllers
 const { 
     getAllPost, 
@@ -14,18 +12,22 @@ const {
     deletePost
 } = require('../controllers/posts.controller');
 
+const router = express.Router();
+
 //Enpoint Posts
 
 //Resultado de la ruta http://localhost:4001/api/v1/posts
-router.get('/', getAllPost);
-
-//Enpoint new post metodo post
-router.post('/', createPost);
+router
+    .route('/')
+    .get(getAllPost)
+    .post(createPost);
 
 //Routes Dynamic
-router.route('/:id')
-    .get(postExists, getPostById)
-    .patch(postExists, updatePost)
-    .delete(postExists, deletePost)
+router
+    .use('/:id', postExists)
+    .route('/:id')
+    .get(getPostById)
+    .patch(updatePost)
+    .delete(deletePost)
 
 module.exports = { postsRouter: router };
