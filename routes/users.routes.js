@@ -1,5 +1,8 @@
 const express = require('express');
 
+//Middlewares
+const { userExists } = require('../middlewares/users.middlewares');
+
 const router = express.Router();
 
 //Controllers
@@ -20,7 +23,7 @@ router.get('/', getAllUser);
 router.post('/', createUser);
 
 //Routes Dynamic
-// router.get('/:id', getUserById);
+// router.get('/:id', userExists, getUserById);
 
 //Update Users
 // router.patch('/:id', updateUser);
@@ -30,8 +33,8 @@ router.post('/', createUser);
 
 //Se pueden agrupar todas las rutas con el mismo parameto.
 router.route('/:id')
-    .get(getUserById)
-    .patch(updateUser)
-    .delete(deleteUser)
+    .get( userExists, getUserById)
+    .patch(userExists, updateUser)
+    .delete(userExists, deleteUser)
 
 module.exports = { usersRouter: router };

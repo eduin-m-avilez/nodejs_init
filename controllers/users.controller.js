@@ -1,5 +1,5 @@
 //Import users
-const { User } = require('../model/userModel')
+const { User } = require('../model/userModel');
 
 // Function enpoints users
 const getAllUser = async (req, res) => {
@@ -34,19 +34,11 @@ const getAllUser = async (req, res) => {
 //Function routes dynamics
  const getUserById = async (req, res) =>{
     try {
+        const { user } = req;
         //Params guarda el parametro que le pasamos en la ruta 
-        const { id } = req.params;
+        // const { id } = req.params;
         // SELECT * FROM users WHERE id === ? .. Imprime el parametro del usuario que le ingresemos en este caso es una busqueda po id
-        const user = await User.findOne({ where: {id} });
-
-        if(!user){
-            return res
-                .status(404)
-                .json({ 
-                    status: 'error', 
-                    message: 'User not fount given that id'
-                });
-        };
+        // const user = await User.findOne({ where: {id} }); 
        
         res.status(201).json({
             user,
@@ -60,23 +52,14 @@ const getAllUser = async (req, res) => {
  //Function Update user
  const updateUser = async(req, res) =>{
     try {
-        const { id } = req.params;
-        const { name } = req.body;
+        const { user } = req;
+        // const { id } = req.params;
+        const { name, email } = req.body;
 
         // await User.update({name}, {where: { id }});  //Esta esuna forma de actualizar los datos de los usuarios
+        // const user = await User.findOne({ where: {id} });
 
-        const user = await User.findOne({ where: {id} });
-
-        if(!user){
-            return res
-                .status(404)
-                .json({ 
-                    status: 'error', 
-                    message: 'User not fount given that id'
-                });
-        };
-
-        await user.update({ name} );
+        await user.update({ name, email} );
 
         res.status(201).json({ 
             status: 'success' 
@@ -89,17 +72,10 @@ const getAllUser = async (req, res) => {
  //Funtion Delete user
  const deleteUser = async(req, res) =>{
     try {
-        const { id } = req.params;
+        const {user} = req;
+        // const { id } = req.params;
 
-        const user = await User.findOne( { where: {id}} );
-        if(!user){
-            return res
-                .status(404)
-                .json({ 
-                    status: 'error', 
-                    message: 'User not fount given that id'
-                });
-        };
+        // const user = await User.findOne( { where: {id}} );
 
         //Delete FROM... === Delete User: no es aconsejable eliminar los usuarios de las tablas lo lejor es actualizar el estado de los usuarios.
         // await user.destroy();
